@@ -89,7 +89,7 @@ bool check(visited_cl* visited, output_type_cl* now_x, float now_f, change_cl* n
 	for (int i = 0; i < 3; i++)
 	{
 		bitMask = ONE << i;
-		if ((visited->list_cl[neighbor]->d_zero & bitMask) || !(now_d->position[i])) { //×îÈÝÒ×ÅÐ¶ÏµÄ·ÅÇ°Ãæ 2022.02.24
+		if ((visited->list_cl[neighbor]->d_zero & bitMask) || !(now_d->position[i])) { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ÏµÄ·ï¿½Ç°ï¿½ï¿½ 2022.02.24
 
 		}
 		else
@@ -158,7 +158,7 @@ bool check(visited_cl* visited, output_type_cl* now_x, float now_f, change_cl* n
 			}
 		}
 	}
-	
+	return true;
 }
 inline float dist2_cl(output_type_cl* now, visited_cl* visited, int neighbor) {
 	float out = 0;

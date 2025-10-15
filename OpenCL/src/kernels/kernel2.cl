@@ -57,17 +57,17 @@ void get_heavy_atom_movable_coords( output_type_cl* tmp, const m_cl* m_cl_gpu) {
 //}
 
 
-void add_to_output_container(out_container* out, const output_type_cl* tmp) {
-	if (out->current_size <= MAX_CONTAINER_SIZE_EVERY_WI) {
-		out->container[out->current_size - 1] = *tmp;
-		out->current_size++;
-		container_sort(out);
-	}
-	else {
-		out->container[MAX_CONTAINER_SIZE_EVERY_WI - 1] = *tmp;
-		container_sort(out);
-	}
-}
+//void add_to_output_container(out_container* out, const output_type_cl* tmp) {
+//	if (out->current_size <= MAX_CONTAINER_SIZE_EVERY_WI) {
+//		out->container[out->current_size - 1] = *tmp;
+//		out->current_size++;
+//		container_sort(out);
+//	}
+//	else {
+//		out->container[MAX_CONTAINER_SIZE_EVERY_WI - 1] = *tmp;
+//		container_sort(out);
+//	}
+//}
 
 //Generate a random number according to step
 float generate_n(__constant float* pi_map, const int step) {
@@ -178,7 +178,7 @@ void kernel2(	__global	m_cl*			m_cl_global,
 
 				output_type_cl_init_with_output(&tmp, &candidate);
 
-				set(&tmp, &m_cl_gpu.ligand.rigid, m_cl_gpu.m_coords.coords,
+				set(&tmp, &m_cl_gpu.ligand.rigid, (m_coords_cl *) m_cl_gpu.m_coords.coords,
 					m_cl_gpu.atoms, m_cl_gpu.m_num_movable_atoms, epsilon_fl);
 				
 				if (tmp.e < best_e) {
@@ -195,7 +195,7 @@ void kernel2(	__global	m_cl*			m_cl_global,
 					// set
 
 					if (tmp.e < best_e) {
-						set(&tmp, &m_cl_gpu.ligand.rigid, m_cl_gpu.m_coords.coords,
+						set(&tmp, &m_cl_gpu.ligand.rigid, (m_coords_cl*) m_cl_gpu.m_coords.coords,
 							m_cl_gpu.atoms, m_cl_gpu.m_num_movable_atoms, epsilon_fl);
 
 						output_type_cl_init_with_output(&best_out, &tmp);

@@ -298,22 +298,22 @@ inline void local_to_lab_direction(			float* out,
 				orientation_m[8] * local_direction[2];
 }
 
-inline void local_to_lab(						float*		out,
-							const				float*		origin,
-							const				float*		local_coords,
-							const				float*		orientation_m
+inline void local_to_lab(                       float* out,
+                            const               float* origin,
+                            const               float (*local_coords)[3],
+                            const               float* orientation_m
 ) {
-	out[0] = origin[0] + (	orientation_m[0] * local_coords[0] +
-							orientation_m[3] * local_coords[1] +
-							orientation_m[6] * local_coords[2]
+	out[0] = origin[0] + (	orientation_m[0] * ((*local_coords)[0]) +
+							orientation_m[3] * ((*local_coords)[1]) +
+							orientation_m[6] * ((*local_coords)[2])
 							);			 
-	out[1] = origin[1] + (	orientation_m[1] * local_coords[0] +
-							orientation_m[4] * local_coords[1] +
-							orientation_m[7] * local_coords[2]
+	out[1] = origin[1] + (	orientation_m[1] * ((*local_coords)[0]) +
+							orientation_m[4] * ((*local_coords)[1]) +
+							orientation_m[7] * ((*local_coords)[2])
 							);			 
-	out[2] = origin[2] + (	orientation_m[2] * local_coords[0] +
-							orientation_m[5] * local_coords[1] +
-							orientation_m[8] * local_coords[2]
+	out[2] = origin[2] + (	orientation_m[2] * ((*local_coords)[0]) +
+							orientation_m[5] * ((*local_coords)[1]) +
+							orientation_m[8] * ((*local_coords)[2])
 							);
 }
 
@@ -357,7 +357,7 @@ void set(	const				output_type_cl* x,
 		float torsion = x->lig_torsion[current - 1]; // torsions are all related to child nodes
 		local_to_lab(	lig_rigid_gpu->origin[current],
 						lig_rigid_gpu->origin[parent],
-						lig_rigid_gpu->relative_origin[current],
+						&lig_rigid_gpu->relative_origin[current],
 						lig_rigid_gpu->orientation_m[parent]
 						); // set origin
 		local_to_lab_direction(	lig_rigid_gpu->axis[current],
@@ -543,7 +543,7 @@ float m_eval_deriv(					output_type_cl*		c,
 					const	__global	float*				v,
 					const				float				epsilon_fl
 ) {
-	set(c, &m_cl_gpu->ligand.rigid, m_cl_gpu->m_coords.coords, m_cl_gpu->atoms, m_cl_gpu->m_num_movable_atoms, epsilon_fl);
+	set(c, &m_cl_gpu->ligand.rigid, (m_coords_cl*) m_cl_gpu->m_coords.coords, m_cl_gpu->atoms, m_cl_gpu->m_num_movable_atoms, epsilon_fl);
 
 	float e = ig_eval_deriv(	c,
 								g, 
@@ -575,6 +575,7 @@ inline float find_change_index_read(const change_cl* g, int index) {
 	index -= 3;
 	if (index < g->lig_torsion_size)return g->lig_torsion[index]; //
 	printf("\nKernel2:find_change_index_read() ERROR!"); // Shouldn't be here
+	return 0.0f;
 }
 
 inline void find_change_index_write(change_cl* g, int index, float data) {
