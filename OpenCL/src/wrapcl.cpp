@@ -366,9 +366,6 @@ void SetupBuildProgramWithSource(cl_program program_cl, cl_program program_head,
     std::string full_path = head_inc_path + include_path + option + addtion;
     const char* options = full_path.data();
 
-    printf("\n---> ABOUT TO CALL clBuildProgram... <---\n");
-    fflush(stdout); // This is our last-ditch effort to see something
-
     //Build program
     err = clBuildProgram(program_cl, 1, devices, options, NULL, NULL); checkErr(err);
     if (CL_SUCCESS != err) {

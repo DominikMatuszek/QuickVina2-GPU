@@ -178,7 +178,7 @@ void kernel2(	__global	m_cl*			m_cl_global,
 
 				output_type_cl_init_with_output(&tmp, &candidate);
 
-				set(&tmp, &m_cl_gpu.ligand.rigid, (m_coords_cl *) m_cl_gpu.m_coords.coords,
+				set(&tmp, &m_cl_gpu.ligand.rigid, (m_coords_cl*) m_cl_gpu.m_coords.coords,
 					m_cl_gpu.atoms, m_cl_gpu.m_num_movable_atoms, epsilon_fl);
 				
 				if (tmp.e < best_e) {

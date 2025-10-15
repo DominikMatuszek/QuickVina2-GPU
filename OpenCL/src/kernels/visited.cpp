@@ -89,8 +89,8 @@ bool check(visited_cl* visited, output_type_cl* now_x, float now_f, change_cl* n
 	for (int i = 0; i < 3; i++)
 	{
 		bitMask = ONE << i;
-		if ((visited->list_cl[neighbor]->d_zero & bitMask) || !(now_d->position[i])) { //�������жϵķ�ǰ�� 2022.02.24
-
+		if ((visited->list_cl[neighbor]->d_zero & bitMask) || !(now_d->position[i])) {
+			
 		}
 		else
 		{
